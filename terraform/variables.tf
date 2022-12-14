@@ -1,0 +1,139 @@
+## Service account variables
+
+variable "credentials" {
+  type = string
+}
+
+variable "client_email" {
+  type = string
+}
+
+## Account variables
+
+variable "project" {
+  type = string
+}
+
+variable "region" {
+  type = string
+}
+
+variable "zone" {
+  type = string
+}
+
+variable "geth_image_tag" {
+  type    = string
+  default = "latest"
+}
+
+variable "prysm_image" {
+  type    = string
+  default = "gcr.io/prysmaticlabs/prysm/beacon-chain:latest"
+}
+
+variable "ssh_keys" {
+  default = {}
+}
+
+variable "create_firewall_rule" {
+  description = "Create tag-based firewall rule."
+  type        = bool
+  default     = false
+}
+
+variable "machine_type" {
+  type = string
+}
+
+variable "geth_vm_tags" {
+  description = "Additional network tags for the geth instances."
+  type        = list(string)
+  default     = ["geth-auth-rpc", "geth-http-rpc", "geth-ws-rpc", "geth-p2p"]
+}
+
+variable "prysm_vm_tags" {
+  description = "Additional network tags for the geth instances."
+  type        = list(string)
+  default     = ["prysm-rpc", "prysm-p2p-udp", "prysm-p2p"]
+}
+
+variable "jwt_hex_path" {
+  type    = string
+  default = "/etc/jwt.hex"
+}
+
+variable "jwt_hex_host_path" {
+  type    = string
+  default = "/mnt/stateful_partition/etc/jwt.hex"
+}
+
+variable "geth_datadir_disk_size" {
+  type    = number
+  default = 2000
+}
+
+variable "prysm_datadir_disk_size" {
+  type    = number
+  default = 200
+}
+
+# consumed by both geth and prysm on their respective containers
+variable "datadir_path" {
+  type    = string
+  default = "/mnt/datadir"
+}
+
+# consumed by both geth and prysm on their respective VMs
+variable "datadir_host_path" {
+  type = string
+  default = "/mnt/disks/sdb"
+}
+
+variable "execution_endpoint" {
+  type = string
+}
+
+variable "checkpoint_sync_url" {
+  description = "https://eth-clients.github.io/checkpoint-sync-endpoints/#mainnet"
+  type = string
+  default = "https://beaconstate-mainnet.chainsafe.io"
+}
+
+variable "genesis_beacon_api_url" {
+  description = "https://eth-clients.github.io/checkpoint-sync-endpoints/#mainnet"
+  type = string
+  default = "https://beaconstate-mainnet.chainsafe.io"
+}
+
+locals {
+  environment     = terraform.workspace
+  service_name    = "eth-node"
+  geth_image_name = "${local.service_name}-geth-${local.environment}"
+  volume_mounts = [
+    {
+      mountPath = var.jwt_hex_path
+      name      = "jwt_hex"
+      readOnly  = true
+    },
+    {
+      mountPath = var.datadir_path
+      name     = "datadir"
+      readOnly = false
+    },
+  ]
+  volumes = [
+    {
+      name = "jwt_hex"
+      hostPath = {
+        path = var.jwt_hex_host_path
+      }
+    },
+    {
+      name = "datadir"
+      hostPath = {
+        path = var.datadir_host_path
+      }
+    },
+  ]
+}
