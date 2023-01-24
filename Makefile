@@ -38,7 +38,7 @@ devops/terraform/select/%:
 	terraform -chdir=terraform workspace select $* || terraform -chdir=terraform workspace new $*
 
 devops/terraform/fmt:
-	terraform -chdir=terraform fmt
+	terraform -chdir=terraform fmt -recursive
 
 devops/terraform/init:
 	terraform -chdir=terraform init -reconfigure

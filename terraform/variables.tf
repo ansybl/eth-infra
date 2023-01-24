@@ -49,7 +49,7 @@ variable "machine_type" {
 variable "geth_vm_tags" {
   description = "Additional network tags for the geth instances."
   type        = list(string)
-  default     = ["geth-auth-rpc", "geth-http-rpc", "geth-ws-rpc", "geth-p2p"]
+  default     = ["geth-auth-rpc", "geth-http-rpc", "geth-ws-rpc", "geth-p2p", "geth-metrics"]
 }
 
 variable "prysm_vm_tags" {
@@ -86,7 +86,7 @@ variable "datadir_path" {
 
 # consumed by both geth and prysm on their respective VMs
 variable "datadir_host_path" {
-  type = string
+  type    = string
   default = "/mnt/disks/sdb"
 }
 
@@ -96,14 +96,14 @@ variable "execution_endpoint" {
 
 variable "checkpoint_sync_url" {
   description = "https://eth-clients.github.io/checkpoint-sync-endpoints/#mainnet"
-  type = string
-  default = "https://beaconstate-mainnet.chainsafe.io"
+  type        = string
+  default     = "https://beaconstate-mainnet.chainsafe.io"
 }
 
 variable "genesis_beacon_api_url" {
   description = "https://eth-clients.github.io/checkpoint-sync-endpoints/#mainnet"
-  type = string
-  default = "https://beaconstate-mainnet.chainsafe.io"
+  type        = string
+  default     = "https://beaconstate-mainnet.chainsafe.io"
 }
 
 locals {
@@ -118,8 +118,8 @@ locals {
     },
     {
       mountPath = var.datadir_path
-      name     = "datadir"
-      readOnly = false
+      name      = "datadir"
+      readOnly  = false
     },
   ]
   volumes = [

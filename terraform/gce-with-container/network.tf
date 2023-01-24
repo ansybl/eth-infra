@@ -40,7 +40,7 @@ resource "google_compute_firewall" "allow_tag_geth_ws_rpc" {
 resource "google_compute_firewall" "allow_tag_geth_p2p" {
   count         = var.create_firewall_rule ? 1 : 0
   name          = "${var.prefix}-${local.instance_name}-ingress-tag-geth-p2p-${var.environment}"
-  description   = "Ingress to allow geth P2P TCP and TCP ports to machines with the 'geth-p2p' tag"
+  description   = "Ingress to allow geth P2P TCP and UDP ports to machines with the 'geth-p2p' tag"
   network       = var.network_name
   source_ranges = ["0.0.0.0/0"]
   target_tags   = ["geth-p2p"]
@@ -51,6 +51,19 @@ resource "google_compute_firewall" "allow_tag_geth_p2p" {
   allow {
     protocol = "udp"
     ports    = [var.geth_p2p_port]
+  }
+}
+
+resource "google_compute_firewall" "allow_tag_geth_metrics" {
+  count         = var.create_firewall_rule ? 1 : 0
+  name          = "${var.prefix}-${local.instance_name}-ingress-tag-geth-metrics-${var.environment}"
+  description   = "Ingress to allow geth metrics port to machines with the 'geth-metrics' tag"
+  network       = var.network_name
+  source_ranges = ["0.0.0.0/0"]
+  target_tags   = ["geth-metrics"]
+  allow {
+    protocol = "tcp"
+    ports    = [var.geth_metrics_port]
   }
 }
 
