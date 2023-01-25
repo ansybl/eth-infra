@@ -106,6 +106,19 @@ resource "google_compute_firewall" "allow_tag_prysm_p2p" {
   }
 }
 
+resource "google_compute_firewall" "allow_tag_prysm_metrics" {
+  count         = var.create_firewall_rule ? 1 : 0
+  name          = "${var.prefix}-${local.instance_name}-ingress-tag-prysm-metrics-${var.environment}"
+  description   = "Ingress to allow prysm metrics port to machines with the 'prysm-metrics' tag"
+  network       = var.network_name
+  source_ranges = ["0.0.0.0/0"]
+  target_tags   = ["prysm-metrics"]
+  allow {
+    protocol = "tcp"
+    ports    = [var.prysm_metrics_port]
+  }
+}
+
 resource "google_compute_address" "static" {
   name = "${var.prefix}-${local.instance_name}-address-${var.environment}"
 }
