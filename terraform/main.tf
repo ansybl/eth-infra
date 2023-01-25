@@ -58,7 +58,7 @@ module "gce_geth_worker_container" {
   ]
   privileged_mode      = true
   activate_tty         = true
-  machine_type         = var.machine_type
+  machine_type         = var.geth_machine_type
   prefix               = local.service_name
   environment          = local.environment
   env_variables        = {}
@@ -99,7 +99,7 @@ module "gce_prysm_worker_container" {
   ]
   privileged_mode  = true
   activate_tty     = true
-  machine_type     = var.machine_type
+  machine_type     = var.prysm_machine_type
   prefix           = local.service_name
   environment      = local.environment
   env_variables    = {}

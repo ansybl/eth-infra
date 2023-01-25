@@ -42,7 +42,11 @@ variable "create_firewall_rule" {
   default     = false
 }
 
-variable "machine_type" {
+variable "geth_machine_type" {
+  type = string
+}
+
+variable "prysm_machine_type" {
   type = string
 }
 
