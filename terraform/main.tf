@@ -51,24 +51,28 @@ module "gce_geth_worker_container" {
     "0.0.0.0",
     "--authrpc.jwtsecret",
     var.jwt_hex_path,
+    "--metrics",
+    "--pprof",
+    "--pprof.addr",
+    "0.0.0.0",
   ]
-  privileged_mode = true
-  activate_tty    = true
-  machine_type    = var.machine_type
-  prefix          = local.service_name
-  environment     = local.environment
-  env_variables = {}
+  privileged_mode      = true
+  activate_tty         = true
+  machine_type         = var.machine_type
+  prefix               = local.service_name
+  environment          = local.environment
+  env_variables        = {}
   instance_name        = "geth"
   network_name         = "default"
   create_static_ip     = true
   create_firewall_rule = var.create_firewall_rule
-  vm_tags = var.geth_vm_tags
+  vm_tags              = var.geth_vm_tags
   # This has the permission to download images from Container Registry
-  client_email = var.client_email
-  ssh_keys     = var.ssh_keys
+  client_email      = var.client_email
+  ssh_keys          = var.ssh_keys
   datadir_disk_size = var.geth_datadir_disk_size
-  volume_mounts = local.volume_mounts
-  volumes       = local.volumes
+  volume_mounts     = local.volume_mounts
+  volumes           = local.volumes
   metadata_startup_script = join("\n", [
     data.template_file.setup_jwt_auth_script.rendered,
     data.local_file.format_script.content,
@@ -86,27 +90,27 @@ module "gce_prysm_worker_container" {
     var.jwt_hex_path,
     "--execution-endpoint",
     var.execution_endpoint,
-	"--checkpoint-sync-url",
+    "--checkpoint-sync-url",
     var.checkpoint_sync_url,
     "--genesis-beacon-api-url",
     var.genesis_beacon_api_url,
   ]
-  privileged_mode = true
-  activate_tty    = true
-  machine_type    = var.machine_type
-  prefix          = local.service_name
-  environment     = local.environment
-  env_variables = {}
+  privileged_mode  = true
+  activate_tty     = true
+  machine_type     = var.machine_type
+  prefix           = local.service_name
+  environment      = local.environment
+  env_variables    = {}
   instance_name    = "prysm"
   network_name     = "default"
   create_static_ip = true
-  vm_tags = var.prysm_vm_tags
+  vm_tags          = var.prysm_vm_tags
   # This has the permission to download images from Container Registry
-  client_email = var.client_email
-  ssh_keys     = var.ssh_keys
+  client_email      = var.client_email
+  ssh_keys          = var.ssh_keys
   datadir_disk_size = var.prysm_datadir_disk_size
-  volume_mounts           = local.volume_mounts
-  volumes                 = local.volumes
+  volume_mounts     = local.volume_mounts
+  volumes           = local.volumes
   metadata_startup_script = join("\n", [
     data.template_file.setup_jwt_auth_script.rendered,
     data.local_file.format_script.content,

@@ -47,6 +47,12 @@ variable "geth_p2p_port" {
   default     = 30303
 }
 
+variable "geth_metrics_port" {
+  description = "Port for metrics."
+  type        = number
+  default     = 6060
+}
+
 variable "prysm_rpc_port" {
   description = "RPC port exposed by a beacon node."
   type        = number

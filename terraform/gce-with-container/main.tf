@@ -37,9 +37,9 @@ module "gce-container" {
 ##### COMPUTE ENGINE
 
 resource "google_compute_disk" "datadir" {
-  name  = "${var.prefix}-${local.instance_name}-datadir-disk-${var.environment}"
-  type  = "pd-ssd"
-  size  = var.datadir_disk_size
+  name = "${var.prefix}-${local.instance_name}-datadir-disk-${var.environment}"
+  type = "pd-ssd"
+  size = var.datadir_disk_size
 }
 
 resource "google_compute_instance" "this" {
