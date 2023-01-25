@@ -71,6 +71,12 @@ variable "prysm_p2p_port" {
   default     = 13000
 }
 
+variable "prysm_metrics_port" {
+  description = "Port for metrics."
+  type        = number
+  default     = 8080
+}
+
 variable "datadir_disk_size" {
   description = "Persistent disk size (GB) used for the datadir"
   type        = number

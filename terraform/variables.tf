@@ -55,7 +55,7 @@ variable "geth_vm_tags" {
 variable "prysm_vm_tags" {
   description = "Additional network tags for the geth instances."
   type        = list(string)
-  default     = ["prysm-rpc", "prysm-p2p-udp", "prysm-p2p"]
+  default     = ["prysm-rpc", "prysm-p2p-udp", "prysm-p2p", "prysm-metrics"]
 }
 
 variable "jwt_hex_path" {
