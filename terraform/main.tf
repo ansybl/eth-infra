@@ -45,6 +45,8 @@ module "gce_geth_worker_container" {
     "--ws",
     "--http.addr",
     "0.0.0.0",
+    "--http.vhosts",
+    "*",
     "--ws.addr",
     "0.0.0.0",
     "--authrpc.addr",

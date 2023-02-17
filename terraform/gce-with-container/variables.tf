@@ -167,7 +167,6 @@ variable "metadata_startup_script" {
   default = ""
 }
 
-
 variable "volume_mounts" {
   type = list(object({
     mountPath = string
@@ -184,6 +183,5 @@ variable "volumes" {
       path = string,
     })
   }))
-
   default = []
 }
