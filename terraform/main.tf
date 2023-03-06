@@ -58,17 +58,18 @@ module "gce_geth_worker_container" {
     "--pprof.addr",
     "0.0.0.0",
   ]
-  privileged_mode      = true
-  activate_tty         = true
-  machine_type         = var.geth_machine_type
-  prefix               = local.service_name
-  environment          = local.environment
-  env_variables        = {}
-  instance_name        = "geth"
-  network_name         = "default"
-  create_static_ip     = true
-  create_firewall_rule = var.create_firewall_rule
-  vm_tags              = var.geth_vm_tags
+  privileged_mode       = true
+  activate_tty          = true
+  machine_type          = var.geth_machine_type
+  prefix                = local.service_name
+  environment           = local.environment
+  env_variables         = {}
+  instance_name         = "geth"
+  network_name          = "default"
+  create_static_ip      = true
+  create_firewall_rule  = var.create_firewall_rule
+  geth_rpc_source_range = var.geth_rpc_source_range
+  vm_tags               = var.geth_vm_tags
   # This has the permission to download images from Container Registry
   client_email      = var.client_email
   ssh_keys          = var.ssh_keys
