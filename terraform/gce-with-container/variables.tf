@@ -53,6 +53,12 @@ variable "geth_ws_rpc_port" {
   default     = 8546
 }
 
+variable "geth_rpc_source_range" {
+  description = "Allowed IP source range for (unauthenticated) RPC related call."
+  type        = list(string)
+  default     = ["0.0.0.0/0"]
+}
+
 variable "geth_p2p_port" {
   description = "Port for P2P."
   type        = number

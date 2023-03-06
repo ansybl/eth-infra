@@ -16,7 +16,7 @@ resource "google_compute_firewall" "allow_tag_geth_http_rpc" {
   name          = "${var.prefix}-${local.instance_name}-ingress-tag-geth-http-rpc-${var.environment}"
   description   = "Ingress to allow geth HTTP RPC ports to machines with the 'geth-http-rpc' tag"
   network       = var.network_name
-  source_ranges = ["0.0.0.0/0"]
+  source_ranges = var.geth_rpc_source_range
   target_tags   = ["geth-http-rpc"]
   allow {
     protocol = "tcp"
@@ -29,7 +29,7 @@ resource "google_compute_firewall" "allow_tag_geth_ws_rpc" {
   name          = "${var.prefix}-${local.instance_name}-ingress-tag-geth-ws-rpc-${var.environment}"
   description   = "Ingress to allow geth HTTP WS RPC ports to machines with the 'geth-ws-rpc' tag"
   network       = var.network_name
-  source_ranges = ["0.0.0.0/0"]
+  source_ranges = var.geth_rpc_source_range
   target_tags   = ["geth-ws-rpc"]
   allow {
     protocol = "tcp"

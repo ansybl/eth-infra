@@ -94,6 +94,12 @@ variable "datadir_host_path" {
   default = "/mnt/disks/sdb"
 }
 
+variable "geth_rpc_source_range" {
+  description = "Allowed IP source range for (unauthenticated) RPC related call."
+  type        = list(string)
+  default     = ["0.0.0.0/0"]
+}
+
 variable "execution_endpoint" {
   type = string
 }
