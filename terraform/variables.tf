@@ -29,7 +29,7 @@ variable "geth_image_tag" {
 
 variable "prysm_image" {
   type    = string
-  default = "gcr.io/prysmaticlabs/prysm/beacon-chain:latest"
+  default = "gcr.io/prysmaticlabs/prysm/beacon-chain:v4.0.0"
 }
 
 variable "ssh_keys" {
