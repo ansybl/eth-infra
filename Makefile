@@ -49,19 +49,16 @@ devops/terraform/plan: devops/terraform/select/$(WORKSPACE)
 devops/terraform/apply: devops/terraform/select/$(WORKSPACE)
 	terraform -chdir=terraform apply -auto-approve
 
-# only destroy the VM
-devops/terraform/destroy/%: devops/terraform/select/$(WORKSPACE)
-	terraform -chdir=terraform destroy -target=module.gce_$*_worker_container.google_compute_instance.this -auto-approve
+# only redeploy the VM
+devops/terraform/redeploy/vm/%: devops/terraform/select/$(WORKSPACE)
+	terraform -chdir=terraform apply -replace=module.gce_$*_worker_container.google_compute_instance.this -target=module.gce_$*_worker_container.google_compute_instance.this
 
-devops/terraform/destroy: devops/terraform/destroy/geth devops/terraform/destroy/prysm
 
-devops/terraform/redeploy/prysm: devops/terraform/select/$(WORKSPACE) devops/terraform/destroy/prysm
-	make devops/terraform/apply
+devops/terraform/redeploy/prysm: devops/terraform/redeploy/vm/prysm
 
-devops/terraform/redeploy/geth: devops/terraform/select/$(WORKSPACE) devops/terraform/destroy/geth
-	make devops/terraform/apply
+devops/terraform/redeploy/geth: devops/terraform/redeploy/vm/geth
 
-devops/terraform/redeploy: devops/terraform/select/$(WORKSPACE) devops/terraform/destroy
+devops/terraform/redeploy: devops/terraform/redeploy/prysm devops/terraform/redeploy/geth
 	make devops/terraform/apply
 
 devops/terraform/destroy/all: devops/terraform/select/$(WORKSPACE)
