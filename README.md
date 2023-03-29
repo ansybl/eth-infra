@@ -24,9 +24,26 @@ We leverage [Terraform workspaces](https://developer.hashicorp.com/terraform/lan
 In our setup the `WORKSPACE` matches with the network (e.g. `testnet`, `mainnet`), but can also be used to stand up a dedicated dev instance (e.g. `testnet-andre`).
 
 ## JWT Token deployment
+
 The HTTP connection between your beacon node and execution node needs to be authenticated using a JWT Token.
 This can be generated using the command below and deployed to the secret manager.
 ```sh
 openssl rand -hex 32
 ```
 Find out more: https://docs.prylabs.network/docs/execution-node/authentication
+
+## Smoke tests
+
+Run some tests against the execution node:
+```sh
+PROVIDER_URL=http://ip:8545 python utils/test_geth.py
+```
+If the node port is firewalled, it's possible to tunnel before running the tests:
+```sh
+ssh user@ip -L 0.0.0.0:8545:localhost:8545
+```
+Quick check that the node is accessible:
+```sh
+curl http://localhost:8545 \
+--header 'Content-Type: application/json' \
+--data '{"method": "net_version", "params": [], "id": 1, "jsonrpc": "2.0"}'
