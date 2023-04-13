@@ -1,0 +1,49 @@
+name: Smoke tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      provider_url:
+        description: "The RPC URL of the node to test"
+        required: true
+        default: "http://localhost:8545"
+  schedule:
+    # every hour
+    - cron: "0 * * * *"
+
+env:
+  CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE: service-account.json
+  # used for the SSH tunneling via gcloud
+  INSTANCE_NAME: eth-node-geth-c84e80e6-mainnet
+  PROJECT: dfpl-playground
+  ZONE: us-central1-a
+
+jobs:
+  smoketests:
+    runs-on: ubuntu-latest
+    env:
+      PROVIDER_URL: ${{ github.event.inputs.provider_url || 'http://localhost:8545' }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: google-github-actions/setup-gcloud@v1
+      - run: echo '${{ secrets.GOOGLE_CREDENTIALS }}' > $CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE
+      - name: Open SSH tunnel
+        run: |
+          gcloud compute ssh \
+          --project=$PROJECT \
+          --zone=$ZONE \
+          --ssh-flag="-f -N -M -S control_path -L 8545:localhost:8545 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
+          $INSTANCE_NAME
+      - name: Python virtualenv
+        run: |
+          python -m venv venv
+          . venv/bin/activate
+          pip install -r utils/requirements.txt
+      - run: python utils/test_geth.py
+      - name: Close SSH Tunnel
+        if: always()
+        run: |
+          gcloud compute ssh \
+          --project=$PROJECT \
+          --zone=$ZONE \
+          --ssh-flag="-S control_path -O exit" $INSTANCE_NAME
