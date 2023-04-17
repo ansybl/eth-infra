@@ -15,6 +15,12 @@ ssh_keys = {
 }
 create_firewall_rule = true
 
+## Geth node specific
+geth_rpc_source_range = [
+  # Google Cloud Platform
+  "34.170.0.0/17",
+]
+
 ## Prysm node specific
 # Pointing to our geth node
 execution_endpoint = "http://35.222.198.26:8551"
