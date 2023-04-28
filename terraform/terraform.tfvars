@@ -19,6 +19,7 @@ create_firewall_rule = true
 geth_rpc_source_range = [
   # Google Cloud Platform
   "34.170.0.0/17",
+  "104.197.16.0/20",
 ]
 
 ## Prysm node specific
