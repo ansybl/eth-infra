@@ -65,7 +65,9 @@ def eth_syncing():
     response = requests_post(data)
     assert response.status_code == 200
     assert response.json().keys() == {"jsonrpc", "id", "result"}
-    assert response.json()["result"] in {True, False}
+    result = response.json()["result"]
+    # would fail if the node is still syncing
+    assert result == False, result
 
 
 def eth_get_logs():

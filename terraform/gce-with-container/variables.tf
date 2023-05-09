@@ -137,10 +137,6 @@ variable "machine_type" {
   default = "f1-micro"
 }
 
-variable "ssh_keys" {
-  default = {}
-}
-
 variable "activate_tty" {
   type    = bool
   default = false

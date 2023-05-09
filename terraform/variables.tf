@@ -32,10 +32,6 @@ variable "prysm_image" {
   default = "gcr.io/prysmaticlabs/prysm/beacon-chain:latest"
 }
 
-variable "ssh_keys" {
-  default = {}
-}
-
 variable "create_firewall_rule" {
   description = "Create tag-based firewall rule."
   type        = bool
