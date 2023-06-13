@@ -72,7 +72,6 @@ module "gce_geth_worker_container" {
   vm_tags               = var.geth_vm_tags
   # This has the permission to download images from Container Registry
   client_email      = var.client_email
-  ssh_keys          = var.ssh_keys
   datadir_disk_size = var.geth_datadir_disk_size
   volume_mounts     = local.volume_mounts
   volumes           = local.volumes
@@ -112,7 +111,6 @@ module "gce_prysm_worker_container" {
   vm_tags          = var.prysm_vm_tags
   # This has the permission to download images from Container Registry
   client_email      = var.client_email
-  ssh_keys          = var.ssh_keys
   datadir_disk_size = var.prysm_datadir_disk_size
   volume_mounts     = local.volume_mounts
   volumes           = local.volumes
