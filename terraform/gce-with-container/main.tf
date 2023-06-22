@@ -54,6 +54,12 @@ resource "google_compute_instance" "this" {
       image = module.gce-container.source_image
       size  = 100
       type  = "pd-balanced"
+      # TODO: to be added next time we redeploy the node because this introduces downtime
+      # labels = {
+      #   container-vm = module.gce-container.vm_container_label
+      #   prefix = var.prefix
+      #   instance_name = local.instance_name
+      # }
     }
   }
 
@@ -78,13 +84,22 @@ resource "google_compute_instance" "this" {
   }
 
   labels = {
-    container-vm = module.gce-container.vm_container_label
+    container-vm  = module.gce-container.vm_container_label
+    prefix        = var.prefix
+    instance_name = local.instance_name
   }
 
   service_account {
     email = var.client_email
     scopes = [
       "https://www.googleapis.com/auth/cloud-platform",
+    ]
+  }
+
+  lifecycle {
+    ignore_changes = [
+      # we don't want the Container-Optimized OS changes to force a redeployment of our VM without our consent
+      boot_disk[0].initialize_params[0].image,
     ]
   }
 
