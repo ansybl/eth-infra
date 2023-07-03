@@ -120,10 +120,22 @@ resource "google_compute_firewall" "allow_tag_prysm_metrics" {
 }
 
 resource "google_compute_address" "static" {
-  name = "${var.prefix}-${local.instance_name}-address-${var.environment}"
+  provider = google-beta
+  name     = "${var.prefix}-${local.instance_name}-address-${var.environment}"
+  labels = merge(tomap({
+    prefix        = var.prefix
+    instance_name = local.instance_name
+    }),
+  )
 }
 
 resource "google_compute_address" "static_internal" {
+  provider     = google-beta
   name         = "${var.prefix}-${local.instance_name}-internal-address-${var.environment}"
   address_type = "INTERNAL"
+  labels = merge(tomap({
+    prefix        = var.prefix
+    instance_name = local.instance_name
+    }),
+  )
 }

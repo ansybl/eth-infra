@@ -36,9 +36,27 @@ module "gce-container" {
 ####################
 ##### COMPUTE ENGINE
 
+resource "google_compute_disk" "boot" {
+  name  = "${var.prefix}-${local.instance_name}-boot-disk-${var.environment}"
+  image = module.gce-container.source_image
+  size  = 10
+  type  = "pd-balanced"
+  labels = {
+    container-vm  = module.gce-container.vm_container_label
+    prefix        = var.prefix
+    instance_name = local.instance_name
+  }
+  lifecycle {
+    ignore_changes = [
+      # we don't want the Container-Optimized OS changes to force a redeployment of our VM without our consent
+      image,
+    ]
+  }
+}
+
 resource "google_compute_disk" "datadir" {
   name = "${var.prefix}-${local.instance_name}-datadir-disk-${var.environment}"
-  type = "pd-ssd"
+  type = "pd-balanced"
   size = var.datadir_disk_size
 }
 
@@ -50,17 +68,7 @@ resource "google_compute_instance" "this" {
   tags                      = var.vm_tags
 
   boot_disk {
-    initialize_params {
-      image = module.gce-container.source_image
-      size  = 100
-      type  = "pd-balanced"
-      # TODO: to be added next time we redeploy the node because this introduces downtime
-      # labels = {
-      #   container-vm = module.gce-container.vm_container_label
-      #   prefix = var.prefix
-      #   instance_name = local.instance_name
-      # }
-    }
+    source = google_compute_disk.boot.self_link
   }
 
   attached_disk {

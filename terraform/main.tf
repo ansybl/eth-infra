@@ -13,6 +13,13 @@ provider "google" {
   zone        = var.zone
 }
 
+provider "google-beta" {
+  project     = var.project
+  credentials = file(var.credentials)
+  region      = var.region
+  zone        = var.zone
+}
+
 resource "google_storage_bucket" "default" {
   name          = "${local.service_name}-infra-bucket-tfstate"
   force_destroy = false
