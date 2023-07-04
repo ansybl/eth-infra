@@ -1,0 +1,30 @@
+name: Terraform
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Docker"]
+    types: [completed]
+
+# prevents error acquiring the state lock
+concurrency: terraform
+
+env:
+  PRODUCTION_REF: refs/heads/main
+  CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE: terraform-service-key.json
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_wrapper: false
+      - run: echo '${{ secrets.GOOGLE_CREDENTIALS }}' > $CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE
+      - run: make devops/terraform/init
+      - run: make lint
+      - run: make devops/terraform/plan
+      - name: Terraform Apply
+        if: github.ref == env.PRODUCTION_REF && contains(fromJSON('["push", "workflow_dispatch"]'), github.event_name)
+        run: make devops/terraform/apply

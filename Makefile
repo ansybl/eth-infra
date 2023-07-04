@@ -34,11 +34,18 @@ docker/run/geth:
 docker/run/geth/sh:
 	docker run -it --entrypoint /bin/sh --rm $(GETH_DOCKER_IMAGE)
 
+format: devops/terraform/format
+
+lint: devops/terraform/lint
+
 devops/terraform/select/%:
 	terraform -chdir=terraform workspace select $* || terraform -chdir=terraform workspace new $*
 
-devops/terraform/fmt:
-	terraform -chdir=terraform fmt -recursive
+devops/terraform/format:
+	terraform -chdir=terraform fmt -recursive -diff
+
+devops/terraform/lint:
+	terraform -chdir=terraform fmt -recursive -diff -check
 
 devops/terraform/init:
 	terraform -chdir=terraform init -reconfigure
@@ -52,7 +59,6 @@ devops/terraform/apply: devops/terraform/select/$(WORKSPACE)
 # only redeploy the VM
 devops/terraform/redeploy/vm/%: devops/terraform/select/$(WORKSPACE)
 	terraform -chdir=terraform apply -replace=module.gce_$*_worker_container.google_compute_instance.this -target=module.gce_$*_worker_container.google_compute_instance.this
-
 
 devops/terraform/redeploy/prysm: devops/terraform/redeploy/vm/prysm
 

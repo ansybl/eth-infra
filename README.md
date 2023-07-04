@@ -1,5 +1,7 @@
 # ETH Node Infra
 
+[![Docker](https://github.com/ansybl/eth-infra/actions/workflows/docker.yml/badge.svg)](https://github.com/ansybl/eth-infra/actions/workflows/docker.yml)
+[![Terraform](https://github.com/ansybl/eth-infra/actions/workflows/terraform.yml/badge.svg)](https://github.com/ansybl/eth-infra/actions/workflows/terraform.yml)
 [![Smoke tests](https://github.com/ansybl/eth-infra/actions/workflows/smoketests.yml/badge.svg)](https://github.com/ansybl/eth-infra/actions/workflows/smoketests.yml)
 
 Automates ETH node setup using Prysm for the beacon chain and Geth for the execution layer.
