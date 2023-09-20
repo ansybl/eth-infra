@@ -108,6 +108,8 @@ resource "google_compute_instance" "this" {
     ignore_changes = [
       # we don't want the Container-Optimized OS changes to force a redeployment of our VM without our consent
       boot_disk[0].initialize_params[0].image,
+      # VM that are already up running shouldn't be impacted by startup script updates
+      metadata_startup_script,
     ]
   }
 
