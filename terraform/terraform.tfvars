@@ -16,6 +16,7 @@ create_firewall_rule = true
 geth_rpc_source_range = [
   # Google Cloud Platform
   "34.16.0.0/16",
+  "34.66.0.0/16",
   "34.122.0.0/16",
   "34.170.0.0/17",
   "104.197.16.0/20",
