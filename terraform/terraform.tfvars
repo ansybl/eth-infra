@@ -15,6 +15,7 @@ create_firewall_rule = true
 ## Geth node specific
 geth_rpc_source_range = [
   # Google Cloud Platform
+  "34.16.0.0/16",
   "34.122.0.0/16",
   "34.170.0.0/17",
   "104.197.16.0/20",
@@ -22,4 +23,4 @@ geth_rpc_source_range = [
 
 ## Prysm node specific
 # Pointing to our geth node
-execution_endpoint = "http://35.222.198.26:8551"
+execution_endpoint = "http://geth-node.ansybl.io:8551"
