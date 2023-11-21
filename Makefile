@@ -67,6 +67,16 @@ devops/terraform/redeploy/geth: devops/terraform/redeploy/vm/geth
 devops/terraform/redeploy: devops/terraform/redeploy/prysm devops/terraform/redeploy/geth
 	make devops/terraform/apply
 
+devops/terraform/reset/vm/%:
+	gcloud --project $(PROJECT) compute instances reset $*
+
+devops/terraform/reset/prysm: devops/terraform/reset/vm/eth-node-prysm-cdb502a9-$(WORKSPACE)
+
+# make sure to gracefully stop the geth container to avoid chain data corruption
+devops/terraform/reset/geth: devops/terraform/reset/vm/eth-node-geth-c84e80e6-$(WORKSPACE)
+
+devops/terraform/reset: devops/terraform/reset/prysm devops/terraform/reset/geth
+
 devops/terraform/destroy/all: devops/terraform/select/$(WORKSPACE)
 	terraform -chdir=terraform destroy
 
