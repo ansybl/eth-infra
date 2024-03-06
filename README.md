@@ -1,6 +1,5 @@
 # ETH Node Infra
 
-[![Docker](https://github.com/ansybl/eth-infra/actions/workflows/docker.yml/badge.svg)](https://github.com/ansybl/eth-infra/actions/workflows/docker.yml)
 [![Terraform](https://github.com/ansybl/eth-infra/actions/workflows/terraform.yml/badge.svg)](https://github.com/ansybl/eth-infra/actions/workflows/terraform.yml)
 [![Smoke tests](https://github.com/ansybl/eth-infra/actions/workflows/smoketests.yml/badge.svg)](https://github.com/ansybl/eth-infra/actions/workflows/smoketests.yml)
 
@@ -17,9 +16,6 @@ The persistent disk is mount in `/mnt/disks/sdb/` on the host side and `/mnt/dat
 
 ```sh
 export WORKSPACE=mainnet
-make docker/build
-make docker/login
-make docker/push
 make devops/terraform/plan
 make devops/terraform/apply
 ```

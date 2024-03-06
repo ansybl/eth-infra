@@ -109,7 +109,12 @@ variable "create_static_ip" {
 
 variable "instance_name" {
   description = "The desired name to assign to the deployed instance"
-  default     = "disk-instance-vm-test"
+}
+
+variable "instance_name_suffix" {
+  description = "Legacy backward compatibility so that existing resources don't get replaced."
+  type        = string
+  default     = ""
 }
 
 variable "image" {
