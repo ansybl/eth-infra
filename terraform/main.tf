@@ -44,7 +44,7 @@ data "template_file" "setup_jwt_auth_script" {
 
 module "gce_geth_worker_container" {
   source = "./gce-with-container"
-  image  = "gcr.io/${var.project}/${local.geth_image_name}:${var.geth_image_tag}"
+  image  = local.geth_image
   custom_args = [
     "--datadir",
     var.datadir_path,
@@ -58,6 +58,8 @@ module "gce_geth_worker_container" {
     "0.0.0.0",
     "--authrpc.addr",
     "0.0.0.0",
+    "--authrpc.vhosts",
+    "*",
     "--authrpc.jwtsecret",
     var.jwt_hex_path,
     "--metrics",
@@ -72,6 +74,7 @@ module "gce_geth_worker_container" {
   environment           = local.environment
   env_variables         = {}
   instance_name         = "geth"
+  instance_name_suffix  = "c84e80e6"
   network_name          = "default"
   create_static_ip      = true
   create_firewall_rule  = var.create_firewall_rule
@@ -90,7 +93,7 @@ module "gce_geth_worker_container" {
 
 module "gce_prysm_worker_container" {
   source = "./gce-with-container"
-  image  = var.prysm_image
+  image  = local.prysm_image
   custom_args = [
     "--accept-terms-of-use",
     "--datadir",
@@ -106,16 +109,17 @@ module "gce_prysm_worker_container" {
     "--monitoring-host",
     "0.0.0.0",
   ]
-  privileged_mode  = true
-  activate_tty     = true
-  machine_type     = var.prysm_machine_type
-  prefix           = local.service_name
-  environment      = local.environment
-  env_variables    = {}
-  instance_name    = "prysm"
-  network_name     = "default"
-  create_static_ip = true
-  vm_tags          = var.prysm_vm_tags
+  privileged_mode      = true
+  activate_tty         = true
+  machine_type         = var.prysm_machine_type
+  prefix               = local.service_name
+  environment          = local.environment
+  env_variables        = {}
+  instance_name        = "prysm"
+  instance_name_suffix = "cdb502a9"
+  network_name         = "default"
+  create_static_ip     = true
+  vm_tags              = var.prysm_vm_tags
   # This has the permission to download images from Container Registry
   client_email      = var.client_email
   datadir_disk_size = var.prysm_datadir_disk_size

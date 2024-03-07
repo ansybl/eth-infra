@@ -22,14 +22,24 @@ variable "zone" {
   type = string
 }
 
+variable "geth_image" {
+  type    = string
+  default = "docker.io/ethereum/client-go"
+}
+
 variable "geth_image_tag" {
   type    = string
-  default = "latest"
+  default = "v1.13.13"
 }
 
 variable "prysm_image" {
   type    = string
-  default = "gcr.io/prysmaticlabs/prysm/beacon-chain:latest"
+  default = "gcr.io/prysmaticlabs/prysm/beacon-chain"
+}
+
+variable "prysm_image_tag" {
+  type    = string
+  default = "v5.0.0"
 }
 
 variable "create_firewall_rule" {
@@ -113,9 +123,10 @@ variable "genesis_beacon_api_url" {
 }
 
 locals {
-  environment     = terraform.workspace
-  service_name    = "eth-node"
-  geth_image_name = "${local.service_name}-geth-${local.environment}"
+  environment  = terraform.workspace
+  service_name = "eth-node"
+  geth_image   = "${var.geth_image}:${var.geth_image_tag}"
+  prysm_image  = "${var.prysm_image}:${var.prysm_image_tag}"
   volume_mounts = [
     {
       mountPath = var.jwt_hex_path

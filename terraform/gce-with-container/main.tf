@@ -1,6 +1,6 @@
 locals {
-  # https://www.terraform.io/docs/language/values/locals.html
-  instance_name = format("%s-%s", var.instance_name, substr(md5(module.gce-container.container.image), 0, 8))
+  instance_name_suffix = var.instance_name_suffix == "" ? "" : "-${var.instance_name_suffix}"
+  instance_name        = "${var.instance_name}${local.instance_name_suffix}"
 
   env_variables = [for var_name, var_value in var.env_variables : {
     name  = var_name
