@@ -29,7 +29,7 @@ variable "geth_image" {
 
 variable "geth_image_tag" {
   type    = string
-  default = "v1.13.13"
+  default = "v1.13.14"
 }
 
 variable "prysm_image" {
@@ -39,7 +39,7 @@ variable "prysm_image" {
 
 variable "prysm_image_tag" {
   type    = string
-  default = "v5.0.0"
+  default = "v5.0.3"
 }
 
 variable "create_firewall_rule" {
