@@ -72,7 +72,7 @@ variable "geth_metrics_port" {
 }
 
 variable "prysm_rpc_port" {
-  description = "RPC port exposed by a beacon node."
+  description = "gRPC port exposed by a beacon node."
   type        = number
   default     = 4000
 }
@@ -93,6 +93,12 @@ variable "prysm_metrics_port" {
   description = "Port for metrics."
   type        = number
   default     = 8080
+}
+
+variable "prysm_json_rpc_port" {
+  description = "RPC port exposed by a beacon node."
+  type        = number
+  default     = 3500
 }
 
 variable "datadir_disk_size" {

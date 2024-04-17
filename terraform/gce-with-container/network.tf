@@ -80,6 +80,19 @@ resource "google_compute_firewall" "allow_tag_prysm_rpc" {
   }
 }
 
+resource "google_compute_firewall" "allow_tag_prysm_json_rpc" {
+  count         = var.create_firewall_rule ? 1 : 0
+  name          = "${var.prefix}-${local.instance_name}-ingress-tag-prysm-json-rpc-${var.environment}"
+  description   = "Ingress to allow beacon node json RPC ports to machines with the 'prysm-rpc' tag"
+  network       = var.network_name
+  source_ranges = ["0.0.0.0/0"]
+  target_tags   = ["prysm-rpc"]
+  allow {
+    protocol = "tcp"
+    ports    = [var.prysm_json_rpc_port]
+  }
+}
+
 resource "google_compute_firewall" "allow_tag_prysm_p2p_udp" {
   count         = var.create_firewall_rule ? 1 : 0
   name          = "${var.prefix}-${local.instance_name}-ingress-tag-prysm-p2p-udp-${var.environment}"
