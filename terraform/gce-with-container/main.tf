@@ -60,6 +60,35 @@ resource "google_compute_disk" "datadir" {
   size = var.datadir_disk_size
 }
 
+# make automatic snapshot
+resource "google_compute_resource_policy" "bimonthly" {
+  name = "${var.prefix}-${local.instance_name}-resource-policy-${var.environment}"
+  snapshot_schedule_policy {
+    schedule {
+      daily_schedule {
+        days_in_cycle = 14
+        start_time    = "04:00"
+      }
+    }
+    retention_policy {
+      max_retention_days    = 30
+      on_source_disk_delete = "KEEP_AUTO_SNAPSHOTS"
+    }
+    snapshot_properties {
+      labels = {
+        prefix        = var.prefix
+        instance_name = local.instance_name
+        environment   = var.environment
+      }
+    }
+  }
+}
+
+resource "google_compute_disk_resource_policy_attachment" "snapshot_attachment_bimonthly" {
+  name = google_compute_resource_policy.bimonthly.name
+  disk = google_compute_disk.datadir.name
+}
+
 resource "google_compute_instance" "this" {
   name         = "${var.prefix}-${local.instance_name}-${var.environment}"
   machine_type = var.machine_type
