@@ -108,6 +108,8 @@ module "gce_prysm_worker_container" {
     var.genesis_beacon_api_url,
     "--monitoring-host",
     "0.0.0.0",
+    "--grpc-gateway-host",
+    "0.0.0.0"
   ]
   privileged_mode      = true
   activate_tty         = true
