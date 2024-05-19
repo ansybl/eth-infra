@@ -85,7 +85,7 @@ variable "geth_datadir_disk_size" {
 
 variable "prysm_datadir_disk_size" {
   type    = number
-  default = 200
+  default = 250
 }
 
 # consumed by both geth and prysm on their respective containers
