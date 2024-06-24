@@ -29,7 +29,7 @@ variable "geth_image" {
 
 variable "geth_image_tag" {
   type    = string
-  default = "v1.13.14"
+  default = "v1.14.5"
 }
 
 variable "prysm_image" {
@@ -80,7 +80,7 @@ variable "jwt_hex_host_path" {
 
 variable "geth_datadir_disk_size" {
   type    = number
-  default = 2000
+  default = 2500
 }
 
 variable "prysm_datadir_disk_size" {
