@@ -39,7 +39,7 @@ variable "prysm_image" {
 
 variable "prysm_image_tag" {
   type    = string
-  default = "v5.0.3"
+  default = "v5.0.4"
 }
 
 variable "create_firewall_rule" {
@@ -85,7 +85,7 @@ variable "geth_datadir_disk_size" {
 
 variable "prysm_datadir_disk_size" {
   type    = number
-  default = 250
+  default = 300
 }
 
 # consumed by both geth and prysm on their respective containers
